@@ -1,0 +1,1591 @@
+openapi: 3.1.0
+info:
+  contact:
+    email: support@postpuma.com
+  description: PostPuma API specifications
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://postpuma.com/terms
+  title: PostPuma - OpenAPI 3.0
+  version: 1.0.0
+externalDocs:
+  description: Find out more about PostPuma
+  url: https://postpuma.com
+servers:
+- url: "{host}"
+  variables:
+    host:
+      default: https://app.postpuma.com/app/5afgg2-1egj4n-7612ng-g313ie
+      description: The full PostPuma API path with workspace UUID
+security:
+- bearerAuth: []
+tags:
+- description: Operations about accounts
+  name: accounts
+- description: Operations about media
+  name: media
+- description: Operations about tags
+  name: tags
+- description: Operations about posts
+  name: posts
+paths:
+  /accounts:
+    get:
+      description: List accounts
+      operationId: listAccounts
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listAccounts_200_response'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+      summary: List accounts
+      tags:
+      - accounts
+      x-accepts:
+      - application/json
+  /accounts/{accountUuid}:
+    get:
+      description: Get account
+      operationId: getAccount
+      parameters:
+      - description: Account UUID
+        explode: false
+        in: path
+        name: accountUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+      summary: Get account
+      tags:
+      - accounts
+      x-accepts:
+      - application/json
+  /media:
+    delete:
+      description: Delete media files
+      operationId: deleteMediaFiles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/deleteMediaFiles_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleteMediaFiles_200_response'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+        "422":
+          description: Validation errors
+      summary: Delete media files
+      tags:
+      - media
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+    get:
+      description: List media files
+      operationId: listMediaFiles
+      parameters:
+      - description: Page number
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listMediaFiles_200_response'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+      summary: List media files
+      tags:
+      - media
+      x-accepts:
+      - application/json
+    post:
+      description: Upload media file
+      operationId: uploadMediaFile
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/uploadMediaFile_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaFile'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+      summary: Upload media file
+      tags:
+      - media
+      x-content-type: multipart/form-data
+      x-accepts:
+      - application/json
+  /media/{mediaUuid}:
+    get:
+      description: Get media file
+      operationId: getMediaFile
+      parameters:
+      - description: Media UUID
+        explode: false
+        in: path
+        name: mediaUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaFile'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+      summary: Get media file
+      tags:
+      - media
+      x-accepts:
+      - application/json
+  /posts:
+    delete:
+      description: Delete posts
+      operationId: deletePosts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/deletePosts_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deletePosts_200_response'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+        "422":
+          description: Validation errors.
+      summary: Delete posts
+      tags:
+      - posts
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+    get:
+      description: List posts
+      operationId: listPosts
+      parameters:
+      - description: Page
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listPosts_200_response'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+      summary: List posts
+      tags:
+      - posts
+      x-accepts:
+      - application/json
+    post:
+      description: Create post
+      operationId: createPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createPost_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+        "422":
+          description: Validation errors
+      summary: Create post
+      tags:
+      - posts
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /posts/{postUuid}:
+    delete:
+      description: Delete post
+      operationId: deletePost
+      parameters:
+      - description: Post UUID
+        explode: false
+        in: path
+        name: postUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/deletePost_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deletePosts_200_response'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+      summary: Delete post
+      tags:
+      - posts
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+    get:
+      description: Get post
+      operationId: getPost
+      parameters:
+      - description: Post UUID
+        explode: false
+        in: path
+        name: postUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+      summary: Get post
+      tags:
+      - posts
+      x-accepts:
+      - application/json
+    put:
+      description: Update post
+      operationId: updatePost
+      parameters:
+      - description: Post UUID
+        explode: false
+        in: path
+        name: postUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updatePost_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleteMediaFiles_200_response'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+        "422":
+          description: Validation errors
+      summary: Update post
+      tags:
+      - posts
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /posts/add-to-queue/{postUuid}:
+    post:
+      description: Queue post
+      operationId: queuePost
+      parameters:
+      - description: Post UUID
+        explode: false
+        in: path
+        name: postUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/queuePost_200_response'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+        "422":
+          description: Validation errors
+      summary: Queue post
+      tags:
+      - posts
+      x-accepts:
+      - application/json
+  /posts/schedule/{postUuid}:
+    post:
+      description: Schedule post
+      operationId: schedulePost
+      parameters:
+      - description: Post UUID
+        explode: false
+        in: path
+        name: postUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/schedulePost_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/queuePost_200_response'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+      summary: Schedule post
+      tags:
+      - posts
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /tags:
+    get:
+      description: List tags
+      operationId: listTags
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/listTags_200_response'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+      summary: List tags
+      tags:
+      - tags
+      x-accepts:
+      - application/json
+    post:
+      description: Create tag
+      operationId: createTag
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createTag_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+        "422":
+          description: Validation errors.
+      summary: Create tag
+      tags:
+      - tags
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /tags/{tagUuid}:
+    delete:
+      description: Delete tag
+      operationId: deleteTag
+      parameters:
+      - description: Tag UUID
+        explode: false
+        in: path
+        name: tagUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleteMediaFiles_200_response'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+      summary: Delete tag
+      tags:
+      - tags
+      x-accepts:
+      - application/json
+    get:
+      description: Get tag
+      operationId: getTag
+      parameters:
+      - description: Tag UUID
+        explode: false
+        in: path
+        name: tagUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+      summary: Get tag
+      tags:
+      - tags
+      x-accepts:
+      - application/json
+    put:
+      description: Update tag
+      operationId: updateTag
+      parameters:
+      - description: Tag UUID
+        explode: false
+        in: path
+        name: tagUuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateTag_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleteMediaFiles_200_response'
+          description: Successful operation
+        "401":
+          description: Unauthenticated.
+        "403":
+          description: Access forbidden.
+        "404":
+          description: Workspace not found.
+        "422":
+          description: Validation errors.
+      summary: Update tag
+      tags:
+      - tags
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    Version:
+      example:
+        account_id: 6
+        is_original: true
+        options:
+          youtube:
+            title: title
+            status: status
+          facebook_page:
+            type: type
+          tiktok:
+            brand_content_toggle:
+              account-0: true
+            privacy_level:
+              account-0: true
+            allow_comments:
+              account-0: true
+            content_disclosure:
+              account-0: true
+            brand_organic_toggle:
+              account-0: true
+            allow_stitch:
+              account-0: true
+            allow_duet:
+              account-0: true
+          mastodon:
+            sensitive: true
+          pinterest:
+            link: link
+            boards:
+              accounts-0: accounts-0
+            title: title
+          linkedin:
+            visibility: visibility
+          instagram:
+            type: type
+        content:
+          media:
+          - media
+          - media
+          body: body
+          url: url
+      properties:
+        account_id:
+          type: integer
+        is_original:
+          type: boolean
+        content:
+          $ref: '#/components/schemas/Version_content'
+        options:
+          $ref: '#/components/schemas/Version_options'
+      required:
+      - account_id
+      - content
+      - is_original
+    Post:
+      example:
+        versions:
+        - account_id: 6
+          is_original: true
+          options:
+            youtube:
+              title: title
+              status: status
+            facebook_page:
+              type: type
+            tiktok:
+              brand_content_toggle:
+                account-0: true
+              privacy_level:
+                account-0: true
+              allow_comments:
+                account-0: true
+              content_disclosure:
+                account-0: true
+              brand_organic_toggle:
+                account-0: true
+              allow_stitch:
+                account-0: true
+              allow_duet:
+                account-0: true
+            mastodon:
+              sensitive: true
+            pinterest:
+              link: link
+              boards:
+                accounts-0: accounts-0
+              title: title
+            linkedin:
+              visibility: visibility
+            instagram:
+              type: type
+          content:
+            media:
+            - media
+            - media
+            body: body
+            url: url
+        - account_id: 6
+          is_original: true
+          options:
+            youtube:
+              title: title
+              status: status
+            facebook_page:
+              type: type
+            tiktok:
+              brand_content_toggle:
+                account-0: true
+              privacy_level:
+                account-0: true
+              allow_comments:
+                account-0: true
+              content_disclosure:
+                account-0: true
+              brand_organic_toggle:
+                account-0: true
+              allow_stitch:
+                account-0: true
+              allow_duet:
+                account-0: true
+            mastodon:
+              sensitive: true
+            pinterest:
+              link: link
+              boards:
+                accounts-0: accounts-0
+              title: title
+            linkedin:
+              visibility: visibility
+            instagram:
+              type: type
+          content:
+            media:
+            - media
+            - media
+            body: body
+            url: url
+        scheduled_at: scheduled_at
+        created_at: created_at
+        id: 0
+        accounts:
+        - data:
+            is_private: true
+            privacy_levels:
+            - privacy_levels
+            - privacy_levels
+            stitch_disabled: true
+            duet_disabled: true
+            union_id: union_id
+            max_video_post_duration_sec: 6
+            comment_disabled: true
+          provider: provider
+          authorized: true
+          name: name
+          created_at: created_at
+          id: 0
+          uuid: uuid
+          username: username
+        - data:
+            is_private: true
+            privacy_levels:
+            - privacy_levels
+            - privacy_levels
+            stitch_disabled: true
+            duet_disabled: true
+            union_id: union_id
+            max_video_post_duration_sec: 6
+            comment_disabled: true
+          provider: provider
+          authorized: true
+          name: name
+          created_at: created_at
+          id: 0
+          uuid: uuid
+          username: username
+        published_at: published_at
+        uuid: uuid
+        user:
+          name: name
+        status: status
+        tags:
+        - name: name
+          id: 1
+          hex_color: hex_color
+          uuid: uuid
+        - name: name
+          id: 1
+          hex_color: hex_color
+          uuid: uuid
+        trashed: true
+      properties:
+        id:
+          type: integer
+        uuid:
+          type: string
+        status:
+          type: string
+        accounts:
+          items:
+            $ref: '#/components/schemas/Account'
+          type: array
+        versions:
+          items:
+            $ref: '#/components/schemas/Version'
+          type: array
+        tags:
+          items:
+            $ref: '#/components/schemas/Tag'
+          type: array
+        user:
+          $ref: '#/components/schemas/Post_user'
+        scheduled_at:
+          type: string
+        published_at:
+          type: string
+        created_at:
+          type: string
+        trashed:
+          type: boolean
+    Tag:
+      example:
+        name: name
+        id: 1
+        hex_color: hex_color
+        uuid: uuid
+      properties:
+        id:
+          type: integer
+        uuid:
+          type: string
+        name:
+          type: string
+        hex_color:
+          type: string
+    MediaFile:
+      example:
+        thumb_url: thumb_url
+        is_video: true
+        mime_type: mime_type
+        name: name
+        created_at: created_at
+        id: id
+        type: type
+        uuid: uuid
+        url: url
+      properties:
+        id:
+          type: string
+        uuid:
+          type: string
+        name:
+          type: string
+        mime_type:
+          type: string
+        type:
+          type: string
+        url:
+          type: string
+        thumb_url:
+          type: string
+        is_video:
+          type: boolean
+        created_at:
+          type: string
+    Account:
+      example:
+        data:
+          is_private: true
+          privacy_levels:
+          - privacy_levels
+          - privacy_levels
+          stitch_disabled: true
+          duet_disabled: true
+          union_id: union_id
+          max_video_post_duration_sec: 6
+          comment_disabled: true
+        provider: provider
+        authorized: true
+        name: name
+        created_at: created_at
+        id: 0
+        uuid: uuid
+        username: username
+      properties:
+        id:
+          format: int64
+          type: integer
+        uuid:
+          type: string
+        name:
+          type: string
+        username:
+          type: string
+        provider:
+          type: string
+        data:
+          $ref: '#/components/schemas/Account_data'
+        authorized:
+          type: boolean
+        created_at:
+          type: string
+      xml:
+        name: pet
+    listAccounts_200_response:
+      example:
+        data:
+        - data:
+            is_private: true
+            privacy_levels:
+            - privacy_levels
+            - privacy_levels
+            stitch_disabled: true
+            duet_disabled: true
+            union_id: union_id
+            max_video_post_duration_sec: 6
+            comment_disabled: true
+          provider: provider
+          authorized: true
+          name: name
+          created_at: created_at
+          id: 0
+          uuid: uuid
+          username: username
+        - data:
+            is_private: true
+            privacy_levels:
+            - privacy_levels
+            - privacy_levels
+            stitch_disabled: true
+            duet_disabled: true
+            union_id: union_id
+            max_video_post_duration_sec: 6
+            comment_disabled: true
+          provider: provider
+          authorized: true
+          name: name
+          created_at: created_at
+          id: 0
+          uuid: uuid
+          username: username
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Account'
+          type: array
+    listMediaFiles_200_response:
+      example:
+        data:
+        - thumb_url: thumb_url
+          is_video: true
+          mime_type: mime_type
+          name: name
+          created_at: created_at
+          id: id
+          type: type
+          uuid: uuid
+          url: url
+        - thumb_url: thumb_url
+          is_video: true
+          mime_type: mime_type
+          name: name
+          created_at: created_at
+          id: id
+          type: type
+          uuid: uuid
+          url: url
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/MediaFile'
+          type: array
+    uploadMediaFile_request:
+      properties:
+        file:
+          format: binary
+          type: string
+    deleteMediaFiles_request:
+      properties:
+        items:
+          description: File IDs
+          items:
+            type: integer
+          type: array
+      required:
+      - items
+    deleteMediaFiles_200_response:
+      example:
+        success: true
+      properties:
+        success:
+          type: boolean
+    listPosts_200_response:
+      example:
+        data:
+        - versions:
+          - account_id: 6
+            is_original: true
+            options:
+              youtube:
+                title: title
+                status: status
+              facebook_page:
+                type: type
+              tiktok:
+                brand_content_toggle:
+                  account-0: true
+                privacy_level:
+                  account-0: true
+                allow_comments:
+                  account-0: true
+                content_disclosure:
+                  account-0: true
+                brand_organic_toggle:
+                  account-0: true
+                allow_stitch:
+                  account-0: true
+                allow_duet:
+                  account-0: true
+              mastodon:
+                sensitive: true
+              pinterest:
+                link: link
+                boards:
+                  accounts-0: accounts-0
+                title: title
+              linkedin:
+                visibility: visibility
+              instagram:
+                type: type
+            content:
+              media:
+              - media
+              - media
+              body: body
+              url: url
+          - account_id: 6
+            is_original: true
+            options:
+              youtube:
+                title: title
+                status: status
+              facebook_page:
+                type: type
+              tiktok:
+                brand_content_toggle:
+                  account-0: true
+                privacy_level:
+                  account-0: true
+                allow_comments:
+                  account-0: true
+                content_disclosure:
+                  account-0: true
+                brand_organic_toggle:
+                  account-0: true
+                allow_stitch:
+                  account-0: true
+                allow_duet:
+                  account-0: true
+              mastodon:
+                sensitive: true
+              pinterest:
+                link: link
+                boards:
+                  accounts-0: accounts-0
+                title: title
+              linkedin:
+                visibility: visibility
+              instagram:
+                type: type
+            content:
+              media:
+              - media
+              - media
+              body: body
+              url: url
+          scheduled_at: scheduled_at
+          created_at: created_at
+          id: 0
+          accounts:
+          - data:
+              is_private: true
+              privacy_levels:
+              - privacy_levels
+              - privacy_levels
+              stitch_disabled: true
+              duet_disabled: true
+              union_id: union_id
+              max_video_post_duration_sec: 6
+              comment_disabled: true
+            provider: provider
+            authorized: true
+            name: name
+            created_at: created_at
+            id: 0
+            uuid: uuid
+            username: username
+          - data:
+              is_private: true
+              privacy_levels:
+              - privacy_levels
+              - privacy_levels
+              stitch_disabled: true
+              duet_disabled: true
+              union_id: union_id
+              max_video_post_duration_sec: 6
+              comment_disabled: true
+            provider: provider
+            authorized: true
+            name: name
+            created_at: created_at
+            id: 0
+            uuid: uuid
+            username: username
+          published_at: published_at
+          uuid: uuid
+          user:
+            name: name
+          status: status
+          tags:
+          - name: name
+            id: 1
+            hex_color: hex_color
+            uuid: uuid
+          - name: name
+            id: 1
+            hex_color: hex_color
+            uuid: uuid
+          trashed: true
+        - versions:
+          - account_id: 6
+            is_original: true
+            options:
+              youtube:
+                title: title
+                status: status
+              facebook_page:
+                type: type
+              tiktok:
+                brand_content_toggle:
+                  account-0: true
+                privacy_level:
+                  account-0: true
+                allow_comments:
+                  account-0: true
+                content_disclosure:
+                  account-0: true
+                brand_organic_toggle:
+                  account-0: true
+                allow_stitch:
+                  account-0: true
+                allow_duet:
+                  account-0: true
+              mastodon:
+                sensitive: true
+              pinterest:
+                link: link
+                boards:
+                  accounts-0: accounts-0
+                title: title
+              linkedin:
+                visibility: visibility
+              instagram:
+                type: type
+            content:
+              media:
+              - media
+              - media
+              body: body
+              url: url
+          - account_id: 6
+            is_original: true
+            options:
+              youtube:
+                title: title
+                status: status
+              facebook_page:
+                type: type
+              tiktok:
+                brand_content_toggle:
+                  account-0: true
+                privacy_level:
+                  account-0: true
+                allow_comments:
+                  account-0: true
+                content_disclosure:
+                  account-0: true
+                brand_organic_toggle:
+                  account-0: true
+                allow_stitch:
+                  account-0: true
+                allow_duet:
+                  account-0: true
+              mastodon:
+                sensitive: true
+              pinterest:
+                link: link
+                boards:
+                  accounts-0: accounts-0
+                title: title
+              linkedin:
+                visibility: visibility
+              instagram:
+                type: type
+            content:
+              media:
+              - media
+              - media
+              body: body
+              url: url
+          scheduled_at: scheduled_at
+          created_at: created_at
+          id: 0
+          accounts:
+          - data:
+              is_private: true
+              privacy_levels:
+              - privacy_levels
+              - privacy_levels
+              stitch_disabled: true
+              duet_disabled: true
+              union_id: union_id
+              max_video_post_duration_sec: 6
+              comment_disabled: true
+            provider: provider
+            authorized: true
+            name: name
+            created_at: created_at
+            id: 0
+            uuid: uuid
+            username: username
+          - data:
+              is_private: true
+              privacy_levels:
+              - privacy_levels
+              - privacy_levels
+              stitch_disabled: true
+              duet_disabled: true
+              union_id: union_id
+              max_video_post_duration_sec: 6
+              comment_disabled: true
+            provider: provider
+            authorized: true
+            name: name
+            created_at: created_at
+            id: 0
+            uuid: uuid
+            username: username
+          published_at: published_at
+          uuid: uuid
+          user:
+            name: name
+          status: status
+          tags:
+          - name: name
+            id: 1
+            hex_color: hex_color
+            uuid: uuid
+          - name: name
+            id: 1
+            hex_color: hex_color
+            uuid: uuid
+          trashed: true
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/Post'
+          type: array
+    createPost_request:
+      properties:
+        date:
+          type: string
+        time:
+          type: string
+        timezone:
+          type: string
+        schedule:
+          type: boolean
+        schedule_now:
+          type: boolean
+        queue:
+          type: boolean
+        accounts:
+          items:
+            description: Account IDs
+            type: integer
+          type: array
+        tags:
+          items:
+            description: Tag IDs
+            type: integer
+          type: array
+        versions:
+          items:
+            $ref: '#/components/schemas/Version'
+          type: array
+    deletePosts_request:
+      properties:
+        posts:
+          description: Post UUIDs
+          items:
+            type: string
+          type: array
+        trash:
+          type: boolean
+      required:
+      - posts
+    deletePosts_200_response_oneOf:
+      example:
+        deleted: true
+      properties:
+        deleted:
+          type: boolean
+    deletePosts_200_response_oneOf_1:
+      properties:
+        to_trash:
+          type: boolean
+    deletePosts_200_response:
+      oneOf:
+      - $ref: '#/components/schemas/deletePosts_200_response_oneOf'
+      - $ref: '#/components/schemas/deletePosts_200_response_oneOf_1'
+    updatePost_request:
+      properties:
+        date:
+          type: string
+        time:
+          type: string
+        timezone:
+          type: string
+        accounts:
+          items:
+            description: Account IDs
+            type: integer
+          type: array
+        tags:
+          items:
+            description: Tag IDs
+            type: integer
+          type: array
+        versions:
+          items:
+            $ref: '#/components/schemas/Version'
+          type: array
+    deletePost_request:
+      properties:
+        trash:
+          description: Whether to move items to trash or not.
+          type: boolean
+    queuePost_200_response:
+      example:
+        success: true
+        scheduled_at: scheduled_at
+      properties:
+        success:
+          type: boolean
+        scheduled_at:
+          type: string
+    schedulePost_request:
+      properties:
+        postNow:
+          type: boolean
+      required:
+      - postNow
+    listTags_200_response:
+      example:
+        data: ""
+      properties:
+        data: {}
+    createTag_request:
+      properties:
+        name:
+          type: string
+        hex_color:
+          type: string
+      required:
+      - hex_color
+      - name
+    updateTag_request:
+      properties:
+        name:
+          type: string
+        hex_color:
+          type: string
+      required:
+      - hex_code
+      - name
+    Version_content:
+      example:
+        media:
+        - media
+        - media
+        body: body
+        url: url
+      properties:
+        body:
+          type: string
+        media:
+          items:
+            type: string
+          type: array
+        url:
+          type: string
+    Version_options_tiktok_privacy_level:
+      example:
+        account-0: true
+      properties:
+        account-0:
+          type: boolean
+    Version_options_tiktok:
+      example:
+        brand_content_toggle:
+          account-0: true
+        privacy_level:
+          account-0: true
+        allow_comments:
+          account-0: true
+        content_disclosure:
+          account-0: true
+        brand_organic_toggle:
+          account-0: true
+        allow_stitch:
+          account-0: true
+        allow_duet:
+          account-0: true
+      properties:
+        privacy_level:
+          $ref: '#/components/schemas/Version_options_tiktok_privacy_level'
+        allow_comments:
+          $ref: '#/components/schemas/Version_options_tiktok_privacy_level'
+        allow_duet:
+          $ref: '#/components/schemas/Version_options_tiktok_privacy_level'
+        allow_stitch:
+          $ref: '#/components/schemas/Version_options_tiktok_privacy_level'
+        content_disclosure:
+          $ref: '#/components/schemas/Version_options_tiktok_privacy_level'
+        brand_organic_toggle:
+          $ref: '#/components/schemas/Version_options_tiktok_privacy_level'
+        brand_content_toggle:
+          $ref: '#/components/schemas/Version_options_tiktok_privacy_level'
+    Version_options_youtube:
+      example:
+        title: title
+        status: status
+      properties:
+        title:
+          type: string
+        status:
+          type: string
+    Version_options_linkedin:
+      example:
+        visibility: visibility
+      properties:
+        visibility:
+          type: string
+    Version_options_mastodon:
+      example:
+        sensitive: true
+      properties:
+        sensitive:
+          type: boolean
+    Version_options_instagram:
+      example:
+        type: type
+      properties:
+        type:
+          type: string
+    Version_options_pinterest_boards:
+      example:
+        accounts-0: accounts-0
+      properties:
+        accounts-0:
+          type: string
+    Version_options_pinterest:
+      example:
+        link: link
+        boards:
+          accounts-0: accounts-0
+        title: title
+      properties:
+        title:
+          type: string
+        link:
+          type: string
+        boards:
+          $ref: '#/components/schemas/Version_options_pinterest_boards'
+    Version_options:
+      example:
+        youtube:
+          title: title
+          status: status
+        facebook_page:
+          type: type
+        tiktok:
+          brand_content_toggle:
+            account-0: true
+          privacy_level:
+            account-0: true
+          allow_comments:
+            account-0: true
+          content_disclosure:
+            account-0: true
+          brand_organic_toggle:
+            account-0: true
+          allow_stitch:
+            account-0: true
+          allow_duet:
+            account-0: true
+        mastodon:
+          sensitive: true
+        pinterest:
+          link: link
+          boards:
+            accounts-0: accounts-0
+          title: title
+        linkedin:
+          visibility: visibility
+        instagram:
+          type: type
+      properties:
+        tiktok:
+          $ref: '#/components/schemas/Version_options_tiktok'
+        youtube:
+          $ref: '#/components/schemas/Version_options_youtube'
+        linkedin:
+          $ref: '#/components/schemas/Version_options_linkedin'
+        mastodon:
+          $ref: '#/components/schemas/Version_options_mastodon'
+        instagram:
+          $ref: '#/components/schemas/Version_options_instagram'
+        pinterest:
+          $ref: '#/components/schemas/Version_options_pinterest'
+        facebook_page:
+          $ref: '#/components/schemas/Version_options_instagram'
+    Post_user:
+      example:
+        name: name
+      properties:
+        name:
+          type: string
+    Account_data:
+      example:
+        is_private: true
+        privacy_levels:
+        - privacy_levels
+        - privacy_levels
+        stitch_disabled: true
+        duet_disabled: true
+        union_id: union_id
+        max_video_post_duration_sec: 6
+        comment_disabled: true
+      properties:
+        union_id:
+          type: string
+        is_private:
+          type: boolean
+        duet_disabled:
+          type: boolean
+        privacy_levels:
+          items:
+            type: string
+          type: array
+        stitch_disabled:
+          type: boolean
+        comment_disabled:
+          type: boolean
+        max_video_post_duration_sec:
+          type: integer
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+
